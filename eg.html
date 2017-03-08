@@ -1,0 +1,523 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content = "height = 640, width = 480, user-scalable = no" /> 
+	<title>RPi Rover</title>
+	<script type="text/javascript" src="/webiopi.js"></script>
+	<script type="text/javascript">
+	webiopi().ready(function() {
+		var button;
+		
+		webiopi().setFunction(15,"out")
+        		button = webiopi().createGPIOButton(15,"\u2600");
+        		$("#led").append(button);
+        		
+		
+		button = webiopi().createButton("bt_up", "\u25B2", forward, stop);
+		$("#up").append(button);
+		
+		button = webiopi().createButton("bt_left", "\u25C4", left, stop);
+		$("#middle").append(button);
+		
+		button = webiopi().createButton("bt_stop", "\u25A0", stop);
+		$("#middle").append(button);
+		
+		button = webiopi().createButton("bt_right", "\u25BA", right, stop);
+		$("#middle").append(button);
+		
+		button = webiopi().createButton("bt_down", "\u25BC", back, stop);
+		$("#down").append(button);
+		
+		
+		button = webiopi().createButton("bt_camup", "\u21E7", up, stop);
+		$("#mid").append(button);
+		
+		button = webiopi().createButton("bt_camdown", "\u21E9", down, stop);
+		$("#mid").append(button);
+		
+		//button = webiopi().createButton("bt_click", "snapshot", camera);
+		//$("#mid").append(button);
+		
+		// Only for Chrome and Safari, create a slider that pulse out a -45 to +45° angle on GPIO 23
+		//button = webiopi().createAngleSlider(17);
+		//content.append(button);
+
+		// Only for Chrome and Safari, create a slider that pulse out a 0-100% duty cycle ratio on GPIO 24
+		//button = webiopi().createRatioSlider(17);
+		//content.append(button);
+		
+		/*<td id="spacing">
+<img src="http://raspberrypi:8080/?action=stream" width="320" align="center">
+<div id="middle" align="center"></div>
+
+</td>
+
+button {
+			margin: 5px 5px 5px 5px;
+			width: 50px;
+			height: 30px;
+			font-size: 18pt;
+			font-weight: bold;
+			color: black;
+			background-color:yellow;
+		}
+
+*/
+		
+		webiopi().refreshGPIO(true);
+	});
+		
+	function right() {
+		webiopi().digitalWrite(21, 1);
+	}
+	
+	function left() {
+		webiopi().digitalWrite(17, 1);
+	}
+	
+	function forward(){
+		
+		webiopi().digitalWrite(17, 0);
+		webiopi().digitalWrite(4, 1);
+		webiopi().digitalWrite(19, 1);
+		webiopi().digitalWrite(21, 0);
+		
+	}
+	
+	function back(){
+		webiopi().digitalWrite(17, 1);
+		webiopi().digitalWrite(4, 0);
+		webiopi().digitalWrite(19, 0);
+		webiopi().digitalWrite(21, 1);
+		
+	}
+	
+	function up(){
+		webiopi().pulseRatio(5, 1.0);
+	}
+	
+	function down(){
+		webiopi().pulseRatio(6, 1.0);
+	}
+	
+	function stop() {
+		webiopi().digitalWrite(17, 0);
+		webiopi().digitalWrite(4, 0);
+		webiopi().digitalWrite(19, 0);
+		webiopi().digitalWrite(21, 0);
+		webiopi().digitalWrite(5, 0);
+		webiopi().digitalWrite(6, 0);
+	}
+	
+	function camera(){
+		webiopi().callMacro("clickpic");
+	}
+	
+	</script>
+	<style type="text/css">
+		
+		
+		button {
+			margin: 5px 5px 5px 5px;
+			height: 60px;
+			width: 60px;
+			border: 2px;
+			  background: #111112;
+			  background-image: -webkit-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -moz-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -ms-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -o-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: linear-gradient(to bottom, #66ffcc, #0000ff);
+			  -webkit-border-radius: 28;
+			  -moz-border-radius: 28;
+			  border-radius: 28px;
+			  font-family: Arial;
+			  color: #000000;
+			  font-size: 20px;
+			  padding: 20px 20px 20px 20px;
+			  text-decoration: none;
+			}
+
+		button:hover {
+			  background: #0e6296;
+			  background-image: -webkit-linear-gradient(top, #0e6296, #073a5c);
+			  background-image: -moz-linear-gradient(top, #0e6296, #073a5c);
+			  background-image: -ms-linear-gradient(top, #0e6296, #073a5c);
+			  background-image: -o-linear-gradient(top, #0e6296, #073a5c);
+			  background-image: linear-gradient(to bottom, #0e6296, #073a5c);
+			  text-decoration: none;
+			}
+		button:active {
+			background: #043661;
+			  background-image: -webkit-linear-gradient(top, #043661, #14191c);
+			  background-image: -moz-linear-gradient(top, #043661, #14191c);
+			  background-image: -ms-linear-gradient(top, #043661, #14191c);
+			  background-image: -o-linear-gradient(top, #043661, #14191c);
+			  background-image: linear-gradient(to bottom, #043661, #14191c);
+			  text-decoration: none;
+			
+			
+		}
+
+		input[type="range"] {
+			display: block;
+			width: 160px;
+			height: 45px;
+		}
+		
+		img{
+			
+			width:320px;
+			height:240px;
+			margin-left:10px;
+			
+			left:115px;
+			top:0px;
+			
+			
+		}
+
+		body { margin: 0; padding: 0; text-align: center; background: #fff}
+
+
+* {margin: 0; padding: 0; border: 0; text-align: left; font-family: Verdana, Arial, sans-serif; font-size: 11px; line-height: 18px; color: #999 }
+
+table, th, td
+{
+padding-right:15px;
+text-align: center;
+}
+
+.warning {
+	color:red;
+}
+
+#container {
+	margin: 0 auto; 
+	width: 970px; 
+	background: url('images/hdr.jpg') no-repeat top left;
+	}
+
+#navarea { 
+	width: 970px; 
+	height: 50px; 
+	background: transparent;
+}
+
+#hdr {
+	width: 970px;
+	height: 125px;
+	background:  transparent
+}
+
+.alignrt{
+padding-left:45px;
+}
+
+#lftcol {
+	float: left;
+	width: 200px;
+	background: transparent
+}
+
+#maincol {
+	float: right;
+	width: 7s70px;
+}
+
+#bttmbar {
+	margin-bottom: 20px;
+	float: right;
+	width: 570px;
+	height: 30px;
+	overflow: hidden
+}
+
+
+
+#sitetitle {
+	position: relative;
+	top: 20px;
+	left: 475px;
+	font-family: Georgia, serif; 
+	font-size: 36px; 
+	line-height: 40px;
+	font-weight: 100;
+	color: #FF6512;
+	letter-spacing: 8px;
+	}
+	
+#subtitle {
+	position: relative;
+	top: 24px;
+	left: 475px;
+	font-size: 12px; 
+	font-weight: normal;
+	line-height: 18px;
+	color: #333;
+	letter-spacing: 3px;
+	}
+
+#maincol p { 
+	color: #999; 
+	margin: 5px 10px 5px 25px; 
+	letter-spacing: 0px ;
+}
+
+#maincol h1,h2 {
+	margin: 15px 10px 5px 25px; 
+	font-family: Georgia, serif; 
+	font-size: 17px; 
+	font-weight: 100; 
+	line-height: 19px; 
+	color: #000; 
+}
+
+#maincol .date {
+	margin-left: 25px; 
+	font-size: 9px; 
+	color: #6488F7;
+	letter-spacing: 1px
+}
+
+#maincol a:link, #maincol a:visited { 
+	color: #EA6059;
+	text-decoration: underline;
+	text-align: left;
+}
+
+#maincol a:hover, #maincol a:active {
+	text-decoration: none;
+}
+
+#lftcol a:link, #lftcol a:visited {
+	padding-left: 11px;
+	color: #fff;
+	text-decoration: none;
+	text-align: left;
+}
+	
+#lftcol a:hover, #lftcol a:active {
+	padding-left: 11px;
+	color: #FFF000;
+	text-decoration: none;
+	text-align: left;
+}
+	
+	
+.leftcolbox h1,h2,h3 {
+	font-family: Verdana, Arial, sans-serif;
+	margin: 0 15px 12px 15px;
+	font-weight: bold;
+	color: #fff;
+	letter-spacing: 0;
+	font-size: 11px;
+	line-height: 14px;	
+}
+
+#nav 
+{
+	float: right;
+	margin-top: 27px;
+	white-space: nowrap;
+}
+
+#nav li
+{
+	font-size: 10px;
+	float: left;
+	list-style: none;
+	line-height: 21px;
+	text-align: center;
+}
+
+#nav a {
+	font-size: 10px;
+	padding-left: 12px;
+	display: block;
+	margin-right: 5px;
+	width: 55px; 
+	height: 21px;
+	line-height: 21px;
+	text-decoration: none;
+	 }
+
+#nav a:link, #nav a:visited
+{
+	color: #333; 
+}
+
+#nav a:hover, #nav a:active 
+{
+	border-bottom: 2px solid #5BC4FD;
+}
+
+div.rule {
+	width: 570px;
+	height: 25px;
+	border: 0;
+}
+
+div.sidebar {
+	padding-left:20px;
+	float:right;
+	width:300px;
+	border: 0;
+}
+
+div.subsidebar{
+	padding:20px;
+	float:left;
+	width:50px;
+	border: 0;
+	
+}
+
+
+div.leftcolbox {
+	padding: 0 0 0px 0;
+	margin: 15px;
+	width: 170px;
+	background: no-repeat bottom #5BC4FD;
+	overflow: hidden;
+	}
+	
+div.leftcolboxtop {
+	height: 10px;
+	width: 170px;
+	background: no-repeat top;
+}
+	
+.leftcolbox p {
+	margin: 0 15px 12px 15px;
+	font-size: 11px;
+	line-height: 16px;
+	color: #fff;
+}
+
+.leftcolbox img {
+	margin: 0 auto;
+}
+
+acronym {
+	color: #ccc;
+	border-bottom: 1px dashed #ccc;
+	cursor: help;
+}
+
+#bttmnav { float: right; margin-right: 10px }
+#bttmnav li {display: inline; font-weight: normal;}
+#bttmnav a {  padding-left: 10px; font-size: 9px; line-height: 30px; }
+#bttmnav a:link, #bttmnav a:visited { color: #FFF; }
+#bttmnav a:hover, #bttmnav a:active { text-decoration: none; color: #6488F7; }
+
+#maincol ul {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	margin-left: 70px;
+	list-style: square;
+}
+
+#maincol li {
+	color: #999;
+	margin-left: 10px;
+}
+
+#maincol ol {
+  margin-top: 15px; 
+  margin-bottom: 15px; 
+  font-size: 0.7em;
+  line-height: 1.5em;
+  list-style-type:  decimal
+ }
+
+#video{
+	float:left;
+}
+#up,#down{
+	padding-left:70px;;
+}
+
+span{
+	font-size:40px;
+	color:black;
+	padding:12px;
+}
+
+#gpio15.LOW{
+	background: #111112;
+			  background-image: -webkit-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -moz-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -ms-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: -o-linear-gradient(top, #66ffcc, #0000ff);
+			  background-image: linear-gradient(to bottom, #66ffcc, #0000ff);
+}
+#gpio15.HIGH{
+	background: #043661;
+			  background-image: -webkit-linear-gradient(top, #043661, #14191c);
+			  background-image: -moz-linear-gradient(top, #043661, #14191c);
+			  background-image: -ms-linear-gradient(top, #043661, #14191c);
+			  background-image: -o-linear-gradient(top, #043661, #14191c);
+			  background-image: linear-gradient(to bottom, #043661, #14191c);
+			  text-decoration: none;
+}
+
+
+	</style>
+	
+</head>
+<body>
+<div id="container">
+  <div id="navarea">
+    <ul id="nav">
+      <li><a href="" title="home">Home</a></li>
+      <li><a href="/about.html" title="links">About Us</a></li>
+    </ul>
+  </div>
+  <div id="hdr"> <span id="sitetitle">Raspberry Pi Rover</span> <br />
+    <span id="subtitle">web controlled media transmitting robot</span>
+</div>
+  <div id="lftcol">
+    <div class="leftcolbox">
+      <div class="leftcolboxtop">
+      </div>
+      <h2>Useful links:</h2>
+      <p> <a href="https://www.raspberrypi.org">RPi.org</a><br />
+        <a href="http://elinux.org/RPi_Hub">RPi Hub</a><br />
+      <br /></p>
+    </div>
+  </div>
+  <div id="maincol">
+    <div class="rule">
+      <h1>Welcome Aboard</h1>
+      
+    </div>
+    
+    <div class="subsidebar">
+	<span align="center">&#128247;</span>
+	<div id="mid" ></div>
+	
+	
+	</div>	
+    
+    <div id="video">
+<img src="http://192.168.1.100:8081/cam.mjpg" width="640" height="480" align="center">
+</div>		
+
+<div class="sidebar">
+	<div id="up" align="center"></div>
+	<div id="middle" align="center"></div>
+	<div id="down" align="center"></div>
+	<div id="led" align="center"></div>
+</div>	
+
+	
+ <!-- http://192.168.1.100:8081/cam.mjpg <div id="bttmbar"> <span id="copyright"></span> -->
+ 
+  </div>
+</div>
+</div>
+</body>
+</html>
+
